@@ -4,6 +4,8 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -16,6 +18,10 @@ const App = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showDeadlinePicker, setShowDeadlinePicker] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [taskDetails, setTaskDetails] = useState({
     date: new Date(),
     deadline: new Date(),
@@ -28,6 +34,39 @@ const App = () => {
     status: 'A Fazer',
     color: 'blue'
   });
+
+// Salvar tarefas no AsyncStorage
+const saveTasks = async () => {
+  try {
+    const jsonTasks = JSON.stringify(tasks);
+    await AsyncStorage.setItem('@tasks', jsonTasks);
+  } catch (e) {
+    console.error('Erro ao salvar tarefas:', e);
+  }
+};
+
+// Carregar tarefas do AsyncStorage
+const loadTasks = async () => {
+  try {
+    const jsonTasks = await AsyncStorage.getItem('@tasks');
+    if (jsonTasks) {
+      setTasks(JSON.parse(jsonTasks));
+    }
+  } catch (e) {
+    console.error('Erro ao carregar tarefas:', e);
+  }
+};
+
+
+// Carregar tarefas ao iniciar o app
+useEffect(() => {
+  loadTasks();
+}, []);
+
+// Salvar tarefas sempre que o estado tasks for alterado
+useEffect(() => {
+  saveTasks();
+}, [tasks]);
 
   useEffect(() => {
     const backAction = () => {
@@ -106,6 +145,18 @@ const App = () => {
     );
   };
 
+  const handleStartDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShowStartDatePicker(false);
+    setStartDate(currentDate);
+  };
+
+  const handleEndDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setShowEndDatePicker(false);
+    setEndDate(currentDate);
+  };
+
   const filterTasks = (tasks, filter) => {
     let filteredTasks = tasks;
 
@@ -135,6 +186,13 @@ const App = () => {
         default:
           break;
       }
+    }
+
+    if (startDate && endDate) {
+      filteredTasks = filteredTasks.filter(task => {
+        const taskDeadline = new Date(task.deadline);
+        return taskDeadline >= startDate && taskDeadline <= endDate;
+      });
     }
 
     if (searchText) {
@@ -222,8 +280,13 @@ const App = () => {
           <TouchableOpacity style={styles.filterButton} onPress={() => setFilter('Feito')}>
             <Text style={styles.filterText}>Feito</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton} onPress={() => setShowDatePicker(true)}>
-            <Text style={styles.filterText}>Data</Text>
+        </View>
+        <View style={styles.filterContainer}>
+          <TouchableOpacity style={styles.filterButton} onPress={() => setShowStartDatePicker(true)}>
+            <Text style={styles.filterText}>Início do Prazo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterButton} onPress={() => setShowEndDatePicker(true)}>
+            <Text style={styles.filterText}>Fim do Prazo</Text>
           </TouchableOpacity>
         </View>
         <TextInput
@@ -237,7 +300,7 @@ const App = () => {
           <Text style={styles.receivedEarningsText}>Ganhos Recebidos: R$ {getCurrentMonthEarnings(tasks)}</Text>
         </View>
         <View style={styles.earningsCard}>
-          <Text style={styles.expensesText}>Despesas Previstas este Mês: R$ {getTotalExpenses(tasks)}</Text>
+          <Text style={styles.earningsText}>Despesas Previstas este Mês: R$ {getTotalExpenses(tasks)}</Text>
           <Text style={styles.expensesText}>Despesas Efetuadas: R$ {getCurrentMonthExpenses(tasks)}</Text>
         </View>
         <FlatList
@@ -311,7 +374,7 @@ const App = () => {
               )}
               <TextInput
                 style={styles.input}
-                placeholder="Envolvido"
+                placeholder="Envolvidos"
                 value={taskDetails.involved}
                 onChangeText={(text) => setTaskDetails({ ...taskDetails, involved: text })}
               />
@@ -362,6 +425,22 @@ const App = () => {
             </ScrollView>
           </View>
         </Modal>
+        {showStartDatePicker && (
+          <DateTimePicker
+            value={startDate || new Date()}
+            mode="date"
+            display="default"
+            onChange={handleStartDateChange}
+          />
+        )}
+        {showEndDatePicker && (
+          <DateTimePicker
+            value={endDate || new Date()}
+            mode="date"
+            display="default"
+            onChange={handleEndDateChange}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

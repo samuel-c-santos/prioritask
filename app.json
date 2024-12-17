@@ -1,33 +1,13 @@
 {
   "expo": {
-    "name": "prioritask",
+    "name": "Prioritask",
     "slug": "prioritask",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+    "version": "1.0.1",  // Incrementar a versão
+    "android": {
+      "versionCode": 2  // Incrementar o código da versão
     },
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "635f58da-3afc-4ee7-b1e5-db0719d27636"
-      }
-    },
-    "owner": "samuel_c_santos"
+      "buildNumber": "1.0.1"  // Atualizar o número do build para iOS
+    }
   }
 }
