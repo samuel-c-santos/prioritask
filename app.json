@@ -14,6 +14,11 @@
       "eas": {
         "projectId": "635f58da-3afc-4ee7-b1e5-db0719d27636"
       }
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }
