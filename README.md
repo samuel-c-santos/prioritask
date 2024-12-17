@@ -111,5 +111,5 @@ Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](./LICENSE) p
 Se precisar de mais informações ou suporte, entre em contato:
 
 - **Nome:** Samuel da Costa Santos
-- **Email:** seu-email@email.com
+- **Email:** samuelsantosambiental@gmail.com
 - **LinkedIn:** [Seu LinkedIn](https://www.linkedin.com/in/samuelsantos-amb/)
