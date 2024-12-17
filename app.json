@@ -4,10 +4,16 @@
     "slug": "prioritask",
     "version": "1.0.1",
     "android": {
-      "versionCode": 2
+      "versionCode": 2,
+      "package": "com.samuel_c_santos.prioritask"
     },
     "ios": {
       "buildNumber": "1.0.1"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "635f58da-3afc-4ee7-b1e5-db0719d27636"
+      }
     }
   }
 }
