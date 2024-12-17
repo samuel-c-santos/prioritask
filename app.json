@@ -2,12 +2,12 @@
   "expo": {
     "name": "Prioritask",
     "slug": "prioritask",
-    "version": "1.0.1",  // Incrementar a versão
+    "version": "1.0.1",
     "android": {
-      "versionCode": 2  // Incrementar o código da versão
+      "versionCode": 2
     },
     "ios": {
-      "buildNumber": "1.0.1"  // Atualizar o número do build para iOS
+      "buildNumber": "1.0.1"
     }
   }
 }
